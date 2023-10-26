@@ -1,21 +1,23 @@
 class Solution {
 public:
-    int solve(int target,int& ans){
-        if(target==1){
-            return ans;
-        }
-
-        if(target%2==0){
-            ans++;
-            return solve(target/2,ans);
-        }
-
-        else{
-            ans++;
-            return solve(target*3 +1,ans);
-        }
-    }
-
+    int solve(int target,int& ans)
+  {
+     if(target==1)
+     {
+         return ans;
+     }
+     if(target%2==0)
+     {
+         ans=ans+1;
+         return solve(target/2,ans);
+     }
+     else
+     {
+         ans=ans+1;
+         return solve(target*3 +1,ans);
+     }
+  }
+public:
     int getKth(int lo, int hi, int k) {
         vector<pair<int,int>>v;
         int ans=0;
