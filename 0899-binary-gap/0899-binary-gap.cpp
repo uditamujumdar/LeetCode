@@ -1,19 +1,15 @@
 class Solution {
 public:
-    int countbits(int n){
-        int count=0;
-        while(n!=0){
-            count++;
-            n=n>>1;
-        }
-        return count;
-    }
-
     int binaryGap(int n) {
-        int count=countbits(n);
+        // int count=countbits(n);
+        int count=sizeof(n)*8;
         vector<int>v;
-        
+
         for(int i=0;i<count;i++){
+            if(n==0){
+                break;
+            }
+
             int x=n&1;
             n=n>>1;
 
