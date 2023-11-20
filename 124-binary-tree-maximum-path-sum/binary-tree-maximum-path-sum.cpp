@@ -16,6 +16,8 @@ public:
             return 0;
         }
 
+        //max(0, f) because we do not consider a negative sum and instead return
+        // zero in that case...
         int l=max(0, f(root->left, maxi));
         int r=max(0, f(root->right, maxi));
 
