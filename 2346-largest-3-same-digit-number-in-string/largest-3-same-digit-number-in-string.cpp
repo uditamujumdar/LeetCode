@@ -1,23 +1,12 @@
 class Solution {
 public:
     string largestGoodInteger(string num) {
-        string ans="";
-        int n=num.size();
-        int temp=-1;
-        for(int i=0;i<n-2;i++){
-            if(num[i]==num[i+1]&&num[i+1]==num[i+2]){
-                temp=max(temp, num[i]-'0');
+        int result = -1;
+        for (int i = 0; i + 2 < num.length(); i++) {
+            if (num[i] == num[i + 1] && num[i] == num[i + 2]) {
+                result = std::max(result, num[i] - '0');
             }
         }
-
-        if(temp==-1) return ans;
-        
-        else{
-            ans+=to_string(temp);
-            ans+=to_string(temp);
-            ans+=to_string(temp);
-
-            return ans;
-        }
+        return (result == -1) ? "" : std::string(3, '0' + result);
     }
 };
