@@ -18,7 +18,7 @@ public:
             v[s].push_back(it);
         }
 
-        // for(int i=0;i<81;i++){
+        // for(int i=0;i<82;i++){
         //     for(int j=0;j<v[i].size();j++){
         //         cout<<v[i][j]<<" ";
         //     }
