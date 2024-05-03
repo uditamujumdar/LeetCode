@@ -10,20 +10,22 @@ public:
         }
         vector<int>tim(n+1, 1e9);
         tim[k]=0;
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>>pq;
-        //node, time
-        pq.push({k, 0});
+        //{time,node}
+        priority_queue<pair<int,int>, vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        pq.push({0,k});
+        tim[k]=0;
 
         while(!pq.empty()){
-            int node=pq.top().first;
-            int t=pq.top().second;
+            int node=pq.top().second;
+            int t=pq.top().first;
             pq.pop();
-            for(auto it: adj[node]){
+
+            for(auto it:adj[node]){
                 int adjnode=it.first;
                 int w=it.second;
-                if(w+t<tim[adjnode]){
+                if(t+w<tim[adjnode]){
                     tim[adjnode]=w+t;
-                    pq.push({adjnode, w+t});
+                    pq.push({t+w,adjnode});
                 }
             }
         }
