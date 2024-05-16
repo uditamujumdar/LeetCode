@@ -15,7 +15,7 @@ public:
         if(root->left==NULL && root->right==NULL){
             return root->val;
         }
-        if(root->left!=NULL && root->right!=NULL){
+        else{
             if(root->val==2){
                 return f(root->left)||f(root->right);
             }
@@ -27,9 +27,6 @@ public:
     }
 
     bool evaluateTree(TreeNode* root) {
-        if(root==NULL){
-            return false;
-        }
         return f(root);
     }
 };
