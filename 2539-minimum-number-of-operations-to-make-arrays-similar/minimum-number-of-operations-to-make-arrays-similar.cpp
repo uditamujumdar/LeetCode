@@ -1,48 +1,31 @@
 class Solution {
 public:
     long long makeSimilar(vector<int>& nums, vector<int>& target) {
-        int n=nums.size();
-        vector<int>even,odd;
-        sort(target.begin(), target.end());
-        sort(nums.begin(), nums.end());
-
-        for(auto it: target){
-            if(it&1){
-                odd.push_back(it);
-            }
-            else{
-                even.push_back(it);
-            }
-        }
-
-        unordered_map<long long,long long>mp;
-        mp[2]=0, mp[-2]=0;
-        int e=0, o=0;
-        for(int i=0;i<n;i++){
+        vector<int> o1,o2,e1,e2;
+        int i;
+        for(i = 0; i < nums.size(); i++){
             if(nums[i]&1){
-                if(odd[o]>=nums[i]){
-                    mp[2]+=(odd[o]-nums[i])/2;
-                }
-                else{
-                    mp[-2]+=abs(odd[o]-nums[i])/2;
-                }
-                o++;
+                o1.push_back(nums[i]);
+            }else{
+                e1.push_back(nums[i]);
             }
-            else{
-                if(even[e]>=nums[i]){
-                    mp[2]+=(even[e]-nums[i])/2;
-                }
-                else{
-                    mp[-2]+=abs(even[e]-nums[i])/2;
-                }
-                e++;
+            if(target[i]&1){
+                o2.push_back(target[i]);
+            }else{
+                e2.push_back(target[i]);
             }
         }
-        long long ans=0;
-        for(auto it: mp){
-            ans+=it.second;
+        sort(o1.begin(),o1.end());
+        sort(o2.begin(),o2.end());
+        sort(e1.begin(),e1.end());
+        sort(e2.begin(),e2.end());
+        long long int ans = 0;
+        for(i = 0; i < e1.size(); i++){
+            ans += abs(e1[i]-e2[i]);
         }
-
-        return ans/2;
+        for(i = 0; i < o1.size(); i++){
+            ans += abs(o1[i]-o2[i]);
+        }
+        return (ans>>2);
     }
 };
