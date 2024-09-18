@@ -1,21 +1,15 @@
+bool compare(int a,int b)
+{
+    return to_string(a)+to_string(b)>to_string(b)+to_string(a);
+}
 class Solution {
 public:
-    static bool cmp(int a, int b){
-        string s=to_string(a);
-        string t=to_string(b);
-        return s+t>t+s;
-    }
-
-    string largestNumber(vector<int>& nums) {
-        sort(nums.begin(), nums.end(), cmp);
-        string ans="";
-
-        if(nums[0]==0){
-            return "0";
-        }
-        for(int i=0;i<nums.size();i++){
-            ans+=(to_string(nums[i]));
-        }
-        return ans;
+    string largestNumber(vector<int>& arr) {
+        sort(arr.begin(),arr.end(),compare);
+        string ans = "";
+        for(int i = 0;i<arr.size();i++)
+        ans+=to_string(arr[i]);
+        if(ans[0]=='0') return "0";
+        return ans; 
     }
 };
