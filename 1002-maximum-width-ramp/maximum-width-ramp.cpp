@@ -2,24 +2,21 @@ class Solution {
 public:
     int maxWidthRamp(vector<int>& nums) {
         int n=nums.size();
-        vector<int>v(n);
-        v[n-1]=nums[n-1];
-
-        for(int i=n-2;i>=0;i--){
-            v[i]=max(v[i+1],nums[i]);
-        }
-
-        int i=0, j=0;
         int maxi=0;
 
-        while(j<n){
-            while(i<j && nums[i]>v[j]){
-                i++;
+        stack<int>st;
+        for(int i=0;i<n;i++){
+            if(st.empty() || nums[st.top()]>nums[i]){
+                st.push(i);
             }
-            maxi=max(maxi, j-i);
-            j++;
         }
 
+        for(int j=n-1;j>=0;j--){
+            while(!st.empty() && nums[st.top()]<=nums[j]){
+                maxi=max(maxi, j-st.top());
+                st.pop();
+            }
+        }
         return maxi;
     }
 };
