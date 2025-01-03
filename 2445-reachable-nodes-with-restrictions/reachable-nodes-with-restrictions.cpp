@@ -1,31 +1,35 @@
 class Solution {
 public:
-    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& rest) {
+    void f(int node, vector<int>&vis, vector<int>adj[], vector<int>&res){
+        vis[node]=1;
+
+        for(auto it: adj[node]){
+            if(!vis[it] && !res[it]){
+                f(it, vis, adj, res);
+            }
+        }
+    }
+
+    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& restricted) {
         vector<int>adj[n];
         for(auto it: edges){
             adj[it[0]].push_back(it[1]);
             adj[it[1]].push_back(it[0]);
         }
-        queue<int>q;
+        vector<int>res(n, 0);
+        for(auto it: restricted){
+            res[it]=1;
+        }
         vector<int>vis(n, 0);
 
-        q.push(0);
-        vis[0]=1;
-        set<int>st(rest.begin(),rest.end());
+        f(0,vis,adj,res);
 
-        int cnt=0;
-        while(!q.empty()){
-            int node=q.front();
-            vis[node]=1;
-            q.pop();
-            cnt++;
-
-            for(auto it: adj[node]){
-                if(!vis[it] && st.find(it)==st.end()){
-                    q.push(it);
-                }
+        int ans=0;
+        for(auto it: vis){
+            if(it!=0){
+                ans++;
             }
         }
-        return cnt;
+        return ans;
     }
 };
