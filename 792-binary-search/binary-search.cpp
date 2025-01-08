@@ -5,14 +5,15 @@ public:
         int i=0, j=n-1;
 
         while(i<=j){
-            if(nums[i]>target){
-                j--;
+            int mid=(i+j)/2;
+            if(nums[mid]>target){
+                j=mid-1;
             }
-            else if(nums[i]<target){
-                i++;
+            else if(nums[mid]<target){
+                i=mid+1;
             }
             else{
-                return i;
+                return mid;
             }
         }
         return -1;
