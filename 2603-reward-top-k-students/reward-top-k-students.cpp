@@ -22,22 +22,9 @@ public:
 
         for(int i=0;i<n;i++){
             int pnts=0;
-            string s="";
-            for(int j=0;j<rep[i].size();j++){
-                if(rep[i][j]==' '){
-                    if(mp.find(s)!=mp.end()){
-                        pnts+=3;
-                    }
-                    else if(mn.find(s)!=mn.end()){
-                        pnts--;
-                    }
-                    s="";
-                }
-                else{
-                    s+=rep[i][j];
-                }
-            }
-            if(s.size()>0){
+            stringstream ss(rep[i]);
+            string s;
+            while(ss>>s){
                 if(mp.find(s)!=mp.end()){
                     pnts+=3;
                 }
@@ -45,6 +32,7 @@ public:
                     pnts--;
                 }
             }
+
             vp.push_back({pnts, stud[i]});
         }
 
