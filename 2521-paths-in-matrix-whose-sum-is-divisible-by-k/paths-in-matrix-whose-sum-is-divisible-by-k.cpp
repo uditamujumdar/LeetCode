@@ -6,7 +6,7 @@ public:
             return 0;
         }
         if(i==v.size()-1 && j==v[0].size()-1){
-            sum=(sum+k+v[i][j])%k;
+            sum=(sum+v[i][j])%k;
             if(sum%k==0){
                 return 1;
             }
@@ -15,8 +15,8 @@ public:
         if(dp[i][j][sum]!=-1){
             return dp[i][j][sum];
         }
-        int down=f(i+1, j, (sum+v[i][j]+k)%k, k, v, dp);
-        int right=f(i, j+1, (sum+v[i][j]+k)%k, k, v, dp);
+        int down=f(i+1, j, (sum+v[i][j])%k, k, v, dp);
+        int right=f(i, j+1, (sum+v[i][j])%k, k, v, dp);
 
         return dp[i][j][sum]=(down%mod +right%mod )%mod;
     }
