@@ -1,32 +1,49 @@
 class Solution {
 public:
     vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prereq, vector<vector<int>>& queries) {
-        
-        vector<vector<int>>mat(n,vector<int>(n,1e9));
         vector<bool>ans;
-        for(auto it:prereq){
-            int u=it[0];
-            int v=it[1];
-            mat[u][v]=1;
+        vector<int>adj[n];
+        for(auto it: prereq){
+            adj[it[0]].push_back(it[1]);
         }
 
-        for(int k=0;k<n;k++){
-            for(int i=0;i<n;i++){
-                for(int j=0;j<n;j++){
-                    mat[i][j]=min(mat[i][j],mat[i][k]+mat[k][j]);
+        vector<int>indeg(n, 0);
+        queue<int>q;
+        for(int i=0;i<n;i++){
+            for(auto it: adj[i]){
+                indeg[it]++;
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            if(indeg[i]==0){
+                q.push(i);
+            }
+        }
+
+        vector<vector<bool>>check(n, vector<bool>(n, false));
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            for(auto it: adj[node]){
+                indeg[it]--;
+                if(indeg[it]==0){
+                    q.push(it);
+                }
+
+                check[node][it]=1;
+                //a is a prereq of b, and b is a prereq of c, then a is a prereq of c.
+                //so check for prereqs of 'node', they'll also be prereqs of 'it' now
+                for(int i=0;i<n;i++){
+                    if(check[i][node]==true){
+                        check[i][it]=true;
+                    }
                 }
             }
         }
 
-        for(auto it:queries){
-            int u=it[0];
-            int v=it[1];
-            if(mat[u][v]!=1e9){
-                ans.push_back(true);
-            }
-            else{
-                ans.push_back(false);
-            }
+        for(auto it: queries){
+            ans.push_back(check[it[0]][it[1]]);
         }
 
         return ans;
