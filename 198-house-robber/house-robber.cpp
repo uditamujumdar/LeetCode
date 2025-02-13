@@ -1,27 +1,23 @@
 class Solution {
 public:
-    int solve(int ind, vector<int>& nums, vector<int>& dp){
-        if(ind==0){
-            return nums[ind];
-        }
-        
-        if(ind<0){
+    int f(int ind, int sum, vector<int>& nums, vector<vector<int>>&dp){
+        if(ind>=nums.size()){
             return 0;
         }
-
-        if(dp[ind]!=-1){
-            return dp[ind];
+        if(dp[ind][sum]!=-1){
+            return dp[ind][sum];
         }
+        int notpick=f(ind+1, sum, nums, dp);
+        int pick=nums[ind]+f(ind+2, sum+nums[ind], nums, dp);
 
-        int pick= nums[ind]+ solve(ind-2, nums, dp);
-        int nonpick= 0 + solve(ind-1, nums, dp);
-
-        return dp[ind]=max(pick, nonpick);
+        return dp[ind][sum]=max(pick,notpick);
     }
 
     int rob(vector<int>& nums) {
         int n=nums.size();
-        vector<int>dp(n, -1);
-        return solve(n-1, nums, dp);
+        int sum=accumulate(nums.begin(), nums.end(), 0);
+        vector<vector<int>>dp(n, vector<int>(sum+1, -1));
+
+        return f(0,0,nums,dp);
     }
 };
