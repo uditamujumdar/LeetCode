@@ -8,10 +8,7 @@ public:
         }   
         int cnt=1;
         int ans=0;
-        for(auto it: v){
-            cout<<it<<" ";
-        }
-
+        
         for(int i=0;i<v.size()-1;i++){
             if(cnt==k){
                 cnt--;
