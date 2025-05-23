@@ -9,6 +9,7 @@ public:
         for(int i=1;i<n;i++){
             pref[i]=max(pref[i-1]+arr[i], arr[i]);
         }
+
         for(int i=n-2;i>=0;i--){
             suff[i]=max(suff[i+1]+arr[i], arr[i]);
         }
@@ -18,6 +19,7 @@ public:
         for(int i=1;i<n-1;i++){
             ans=max(ans, pref[i-1]+suff[i+1]);
         }
+
         return ans;
     }
 };
