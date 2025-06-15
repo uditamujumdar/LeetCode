@@ -1,33 +1,30 @@
 class Solution {
 public:
-    long long f(int k, vector<int>& v){
-        long long total=0;
-        for(long long i=0;i<v.size();i++){
-            total+=v[i]/k;
-            if(v[i]%k){
-                total++;
+    bool f(int mid, vector<int>& p, int h){
+        long long cnt=0;
+        for(int i=0;i<p.size();i++){
+            cnt+=(p[i]/mid);
+            if(p[i]%mid!=0){
+                cnt++;
             }
         }
-        return total;
+        return cnt<=h;
     }
 
     int minEatingSpeed(vector<int>& piles, int h) {
-        long long n=piles.size();
-        long long i=1;
-        long long j=*max_element(piles.begin(), piles.end());
-        long long ans=1e9;
+        int n=piles.size();
 
+        int i=1, j=*max_element(piles.begin(), piles.end());
         while(i<=j){
-            long long mid=i+(j-i)/2;
-            long long tot=f(mid,piles);
-            if(tot<=h){
-                ans=min(ans, mid);
+            int mid=i+(j-i)/2;
+            bool flag=f(mid, piles, h);
+            if(flag){
                 j=mid-1;
             }
             else{
                 i=mid+1;
             }
         }
-        return ans;
+        return i;
     }
 };
