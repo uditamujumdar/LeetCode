@@ -1,37 +1,41 @@
 class Solution {
 public:
-    int solve(int i,int canbuy,int cap,int n,vector<int>&prices, 
-        vector<vector<vector<int>>>&dp){
-        if(cap==0)
-        return 0;
-
-        if(i==n){
-        return 0;
+    int f(int ind, int buy, int k, vector<int>& prices, vector<vector<vector<int>>>& dp){
+        if(ind>=prices.size() || k<=0){
+            return 0;
+        }
+        if(dp[ind][buy][k]!=-1){
+            return dp[ind][buy][k];
         }
 
-        if(dp[i][canbuy][cap]!=-1){
-        return dp[i][canbuy][cap];
+        if(buy==1){
+            int a=-prices[ind]+f(ind+1, 1-buy, k, prices, dp);
+            int b=f(ind+1, buy, k, prices, dp);
+
+            return dp[ind][buy][k]=max(a, b);
         }
 
-        int profit=0;
-
-        if(canbuy){
-            int buy=-prices[i]+solve(i+1,0,cap,n,prices,dp);
-            int notbuy=solve(i+1,1,cap,n,prices,dp);
-            profit=max(buy,notbuy);
-        }
         else{
-            int buy_=prices[i]+solve(i+1,1,cap-1,n,prices,dp);
-            int notbuy_=solve(i+1,0,cap,n,prices,dp);
-            profit=max(buy_, notbuy_);
+            int a=prices[ind]+f(ind+1, 1-buy, k-1, prices, dp);
+            int b=f(ind+1, buy, k, prices, dp);
+
+            return dp[ind][buy][k]=max(a, b);
         }
-        return dp[i][canbuy][cap]=profit;
     }
 
     int maxProfit(int k, vector<int>& prices) {
         int n=prices.size();
-        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(k+1,-1)));
 
-        return solve(0,1,k,n,prices,dp);
+        // return f(0, 1, k, prices, dp);
+        int ans=-1;
+
+        for(int i=1;i<=k;i++){
+            vector<vector<vector<int>>>dp(n, vector<vector<int>>(2, vector<int>(k+1, -1)));
+            ans=max(ans, f(0, 1, i, prices, dp));
+        }
+
+        return ans;
     }
 };
+
+//
