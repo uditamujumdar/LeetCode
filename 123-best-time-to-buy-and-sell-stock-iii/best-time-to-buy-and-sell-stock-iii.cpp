@@ -1,34 +1,34 @@
 class Solution {
 public:
-    int solve(int ind,int canbuy,int cap,vector<int>& prices,int n, 
-        vector<vector<vector<int>>>& dp){
-        if(ind==n || cap==0){
+    int f(int ind, int buy, int cnt, vector<int>& prices, vector<vector<vector<int>>>& dp){
+        if(ind>=prices.size() || cnt<=0){
             return 0;
         }
-        long profit=0;
-
-        if(dp[ind][canbuy][cap]!=-1){
-            return dp[ind][canbuy][cap];
+        if(dp[ind][buy][cnt]!=-1){
+            return dp[ind][buy][cnt];
         }
 
-        if(canbuy){
-            int buy=-prices[ind] + solve(ind+1, 0, cap, prices, n, dp);
-            int notbuy=0+ solve(ind+1, 1, cap, prices, n, dp);
-            profit=max(buy, notbuy);
+        if(buy==1){
+            int a=-prices[ind]+f(ind+1, 1-buy, cnt, prices, dp);
+            int b=f(ind+1, buy, cnt, prices, dp);
+
+            return dp[ind][buy][cnt]=max(a, b);   
         }
+
         else{
-            int buy_=prices[ind]+solve(ind+1, 1, cap-1, prices, n, dp);
-            int notbuy_=0+solve(ind+1, 0, cap, prices, n, dp);
-            profit=max(buy_, notbuy_);
-        }
+            int a=prices[ind]+f(ind+1, 1-buy, cnt-1, prices, dp);
+            int b=f(ind+1, buy, cnt, prices, dp);
 
-        return dp[ind][canbuy][cap]=profit;
+            return dp[ind][buy][cnt]=max(a, b);
+        }
     }
 
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
+        //ind,buy,count
+
         vector<vector<vector<int>>>dp(n, vector<vector<int>>(2, vector<int>(3, -1)));
 
-        return solve(0,1,2,prices,n,dp);
+        return f(0, 1, 2, prices, dp);
     }
 };
