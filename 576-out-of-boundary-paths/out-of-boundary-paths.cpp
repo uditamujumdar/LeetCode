@@ -1,25 +1,30 @@
 class Solution {
+    int mod=1e9+7;
 public:
-    int dp[51][51][52];
-    int mod = 1e9+7;
-    int countPath(int &m,int &n,int x, int r,int c){
-        if(r==m || c==n || r<0 || c<0)
-            return 1; //reached outside the boundary 
-        if(x==0)
-            return 0; //no more moves left;
-        int ans =0;
-        if(dp[r][c][x]!=-1)
-            return dp[r][c][x];
-        
-        ans = ( ans + countPath(m,n,x-1,r-1,c)) % mod; //up
-        ans = ( ans + countPath(m,n,x-1,r+1,c)) % mod; //down
-        ans = ( ans + countPath(m,n,x-1,r,c+1)) % mod; //right
-        ans = ( ans + countPath(m,n,x-1,r,c-1)) % mod; //left     
-        return dp[r][c][x] = ans;
+    int f(int i, int j, int moves, int maxi, int m, int n, vector<vector<vector<int>>>& dp){
+        if(i<0 || j<0 || i>=m || j>=n){
+            return 1;
+        }
+        if(maxi==moves){
+            return 0;
+        }
+        if(dp[i][j][moves]!=-1){
+            return dp[i][j][moves];
+        }
+        int ans=0;
+        ans = (ans + f(i, j-1, moves+1, maxi, m, n, dp)) % mod;
+        ans = (ans + f(i, j+1, moves+1, maxi, m, n, dp)) % mod;
+        ans = (ans + f(i+1, j, moves+1, maxi, m, n, dp)) % mod;
+        ans = (ans + f(i-1, j, moves+1, maxi, m, n, dp)) % mod;
+
+        dp[i][j][moves]=ans;
+
+        return dp[i][j][moves] % mod;
     }
 
-    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
-        memset(dp,-1,sizeof(dp));
-        return countPath(m,n,maxMove,startRow,startColumn);
+    int findPaths(int m, int n, int maxm, int srow, int scol) {
+        vector<vector<vector<int>>>dp(m+1, vector<vector<int>>(n+1, vector<int>(maxm+1, -1)));
+
+        return f(srow, scol, 0, maxm, m, n, dp);
     }
 };
