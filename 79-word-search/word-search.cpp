@@ -1,43 +1,30 @@
 class Solution {
 public:
-    bool dfs(vector<vector<char>>& board, string& word, int row, int col, int ind, vector<vector<int>>& vis){
-        int n=board.size();
-        int m=board[0].size();
-        int w=word.size();
-        int dr[]={-1,0,1,0};
-        int dc[]={0,1,0,-1};
-
-        if(ind==w-1){
+    bool f(int i, int j, vector<vector<char>>& board, int k, string& word){
+        if(k==word.size()){
             return true;
-        }   
-        vis[row][col]=1;
-
-        for(int i=0;i<4;i++){
-            int nrow=row+dr[i];
-            int ncol=col+dc[i];
-
-            if(nrow>=0 && ncol>=0 && nrow<n && ncol<m && !vis[nrow][ncol] && 
-                board[nrow][ncol]==word[ind+1]){
-                if(dfs(board,word,nrow,ncol,ind+1,vis)){
-                    return true;
-                }
-            }
         }
-        vis[row][col]=0;
+        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j]!=word[k]){
+            return false;
+        }
+        char ch=board[i][j];
+        board[i][j]='\0';
+
+        if(f(i+1,j,board,k+1,word) || f(i-1,j,board,k+1,word) || f(i,j+1,board,k+1,word) || f(i,j-1,board,k+1,word)){
+            return true;
+        }
+
+        board[i][j]=ch;
         return false;
     }
-
 
     bool exist(vector<vector<char>>& board, string word) {
         int n=board.size();
         int m=board[0].size();
 
-        vector<vector<int>>vis(n, vector<int>(m, 0));
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (board[i][j]==word[0]) {
-                    if(dfs(board, word, i, j, 0, vis))
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(f(i, j, board, 0, word)){
                     return true;
                 }
             }
